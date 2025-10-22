@@ -1,27 +1,52 @@
 # hybrid-gan-synth-data
-##Problem Statement
-The scarcity of accessible, high-quality training data due to privacy constraints, collection costs,
-and limitations of conventional augmentation methods creates an urgent need for scalable synthetic data generation that preserves semantic richness and underlying correlations across diverse
-modalities.
-##Abstract
-This project proposes a unified Generative Adversarial Network (GAN) framework for generating high-quality synthetic datasets for both structured (tabular) and unstructured (text, image,
-audio) data, based on user-defined requirements. The system combines multiple GAN architectures—CTGAN for tabular data, conditional GAN and diffusion-based models for images,
-and transformer–GAN hybrids for text—under a modular and configurable pipeline. A user
-requirement parser enables conditional data generation, allowing users to specify schema constraints or descriptive prompts. The framework integrates comprehensive evaluation metrics
-for fidelity, diversity, and privacy, ensuring that the generated data remains statistically similar yet non-identical to the original dataset. This system facilitates safe data sharing, research
-reproducibility, and bias-free model training across domains.
-##Proposed Solution
-The proposed pipeline consists of four main modules:
-1. Preprocessing Layer: Handles feature scaling, encoding, and normalization for structured and unstructured inputs.
-2. Generation Layer: Implements CTGAN for tabular data and StyleGAN/TextGAN variants for unstructured data, with support for conditional inputs.
-3. Evaluation Layer: Assesses generated data using statistical similarity (KS-test, correlation metrics), perceptual quality (FID, BLEU), and privacy measures (membership
-inference tests).
-4. User Interface Layer: A REST API or Streamlit-based dashboard that allows users to
-define requirements and retrieve generated datasets and performance reports.
-##Expected Outcome
-The project aims to deliver an end-to-end synthetic data generation framework that:
-• Generates realistic structured and unstructured data aligned with user constraints.
-• Preserves statistical distributions and data relationships while safeguarding privacy.
-• Provides automated evaluation reports quantifying data fidelity and diversity.
-• Offers a deployable and scalable solution for researchers and developers to obtain customizable synthetic datasets for model development and testing.
+Problem Statement
 
+The limited availability of high-quality training data, driven by privacy restrictions, high collection expenses, and the shortcomings of traditional augmentation techniques, highlights the critical need for scalable synthetic data creation that maintains semantic depth and preserves correlations across various data types.
+
+Abstract
+
+This project introduces an integrated Generative Adversarial Network (GAN) system designed to produce high-quality synthetic datasets for structured (tabular) and unstructured (text, image, audio) data, tailored to user-specified needs. The platform merges several GAN models—CTGAN for tabular data, conditional GAN and diffusion-based approaches for images, and transformer-GAN combinations for text—within a flexible, modular pipeline. A user requirement interpreter supports conditional data creation, enabling specification of schema rules or detailed prompts. The system incorporates thorough evaluation criteria for accuracy, variety, and privacy, ensuring the synthetic data mirrors the original’s statistical properties while remaining distinct. This solution promotes secure data exchange, repeatable research, and unbiased model training across fields.
+
+Proposed Solution
+
+The suggested pipeline includes four key components:
+
+
+
+
+
+Preprocessing Layer: Manages feature scaling, encoding, and normalization for both structured and unstructured inputs.
+
+
+
+Generation Layer: Utilizes CTGAN for tabular data and StyleGAN/TextGAN variants for unstructured data, accommodating conditional inputs.
+
+
+
+Evaluation Layer: Evaluates output data with statistical similarity tests (KS-test, correlation metrics), perceptual quality measures (FID, BLEU), and privacy checks (membership inference tests).
+
+
+
+User Interface Layer: Provides a REST API or Streamlit-based dashboard for users to set requirements and access generated datasets along with performance summaries.
+
+Expected Outcome
+
+The project seeks to provide a comprehensive synthetic data generation system that:
+
+
+
+
+
+Produces realistic structured and unstructured data in line with user specifications.
+
+
+
+Maintains statistical distributions and data relationships while protecting privacy.
+
+
+
+Delivers automated evaluation reports detailing data accuracy and variety.
+
+
+
+Supplies a deployable, scalable tool for researchers and developers to create tailored synthetic datasets for model development and testing.
