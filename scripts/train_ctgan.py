@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from scripts.utils import detect_column_types
+import torch
 
 # ---------- Robust CTGAN import across packages/versions ----------
 CTGAN_CLASS = None
@@ -29,23 +30,46 @@ except Exception:
                 CTGAN_CLASS = _CTGAN; SRC = "sdv-tabular"
 
 
-def _make_model(df: pd.DataFrame, epochs: int, batch_size: int):
-    """Instantiate a CTGAN model across ctgan/sdv variants."""
+def _make_model(df, epochs: int, batch_size: int):
+    """Instantiate a CTGAN model across ctgan/sdv variants with auto GPU."""
+    use_gpu = torch.cuda.is_available()
+    dev = "cuda" if use_gpu else "cpu"
+
     if SRC == "sdv-single_table":
-        # SDV single_table needs metadata at init
+        # SDV SingleTable requires metadata at init
         from sdv.metadata import SingleTableMetadata
         metadata = SingleTableMetadata()
         metadata.detect_from_dataframe(df)
-        try:
-            return CTGAN_CLASS(metadata, epochs=epochs, batch_size=batch_size)
-        except TypeError:
-            return CTGAN_CLASS(metadata, epochs=epochs)
 
-    # ctgan classic or sdv-tabular
-    try:
-        return CTGAN_CLASS(epochs=epochs, batch_size=batch_size)
-    except TypeError:
-        return CTGAN_CLASS(epochs=epochs)
+        # Try common GPU kwargs across versions
+        for kwargs in (
+            {"epochs": epochs, "batch_size": batch_size, "device": dev},          # ctgan>=0.7 style
+            {"epochs": epochs, "batch_size": batch_size, "enable_gpu": use_gpu},  # deprecated/alt
+            {"epochs": epochs, "batch_size": batch_size, "cuda": use_gpu},        # legacy
+            {"epochs": epochs, "batch_size": batch_size},                         # last resort
+        ):
+            try:
+                return CTGAN_CLASS(metadata, **kwargs)
+            except TypeError:
+                continue
+        # Fallback without any extras
+        return CTGAN_CLASS(metadata, epochs=epochs)
+
+    # Classic ctgan / sdv-tabular path
+    for kwargs in (
+        {"epochs": epochs, "batch_size": batch_size, "device": dev},
+        {"epochs": epochs, "batch_size": batch_size, "enable_gpu": use_gpu},
+        {"epochs": epochs, "batch_size": batch_size, "cuda": use_gpu},
+        {"epochs": epochs, "batch_size": batch_size},
+        {"epochs": epochs},
+    ):
+        try:
+            return CTGAN_CLASS(**kwargs)
+        except TypeError:
+            continue
+
+    # Absolute fallback
+    return CTGAN_CLASS(epochs=epochs)
 
 
 def _fast_quantile_bin(df: pd.DataFrame, continuous_cols, max_bins: int = 30):

@@ -6,6 +6,7 @@ from scripts.train_ctgan import train
 from scripts.generate import generate
 from scripts.evaluate import evaluate
 from scripts.utils import detect_column_types
+import torch
 
 REAL_INPUT = "data/real/input.csv"
 CLEANED_OUTPUT = "data/real/clean.csv"
@@ -15,6 +16,10 @@ PLOTS_DIR = "plots"
 
 EPOCHS = 50
 BATCH_SIZE = 500
+
+def checking_for_gpu():
+    print("CUDA available:", torch.cuda.is_available())
+    print("Device count:", torch.cuda.device_count())
 
 
 def main():
@@ -43,4 +48,6 @@ if __name__ == "__main__":
     if not os.path.exists(REAL_INPUT):
         print(f"\u274C Error: Please place your dataset at {REAL_INPUT}")
     else:
+        print("*** Checking for Gpu if not avaiable the programm automatically use cpu***")
+        checking_for_gpu()
         main()
