@@ -1,0 +1,2 @@
+input_csv = r"E:\\Gan_Iu\\hybrid-gan-synth-data-nishchay-krishnappa-42308956-CSEMCSPCSP01\\data\\real\\input.csv"
+output_csv = r"\\Gan_Iu\\hybrid-gan-synth-data-nishchay-krishnappa-42308956-CSEMCSPCSP01\\data\\real\\clean.csv"
